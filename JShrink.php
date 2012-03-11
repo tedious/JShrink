@@ -1,6 +1,6 @@
 <?php
 /**
- * Stash
+ * JShrink
  *
  * Copyright (c) 2009-2011, Robert Hafner <tedivm@tedivm.com>.
  * All rights reserved.
@@ -36,10 +36,10 @@
  *
  * @package    JShrink
  * @author     Robert Hafner <tedivm@tedivm.com>
- * @copyright  2009-2011 Robert Hafner <tedivm@tedivm.com>
+ * @copyright  2009-2012 Robert Hafner <tedivm@tedivm.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link       http://code.google.com/p/jshrink-/
- * @version    Release: 0.3
+ * @link       https://github.com/tedivm/JShrink
+ * @version    Release: 0.4
  */
 
 
