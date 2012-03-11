@@ -2,7 +2,7 @@
 /**
  * JShrink
  *
- * Copyright (c) 2009-2011, Robert Hafner <tedivm@tedivm.com>.
+ * Copyright (c) 2009-2012, Robert Hafner <tedivm@tedivm.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@
  * Usage - Minifier::minify($js, $options);
  * Usage - Minifier::minify($js, array('flaggedComments' => false));
  *
- * @version	0.3
+ * @version	0.4
  * @package	JShrink
  * @author	Robert Hafner <tedivm@tedivm.com>
  * @license	http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -116,7 +116,7 @@ class Minifier
 	static protected $jshrink;
 
 	/**
-	 * JShrink::minify takes a string containing javascript and removes unneeded charactors in order to shrink the code
+	 * Minifier::minify takes a string containing javascript and removes unneeded charactors in order to shrink the code
 	 * without altering it's functionality.
 	 */
 	static public function minify($js, $options = array())
@@ -456,5 +456,3 @@ class Minifier
 	}
 
 }
-
-?>
