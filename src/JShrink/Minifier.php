@@ -42,7 +42,7 @@
  * @version    Release: 0.4
  */
 
- namespace Tedivm\JShrink;
+ namespace JShrink;
 
 /**
  * Minifier
