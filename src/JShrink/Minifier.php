@@ -2,7 +2,7 @@
 /**
  * JShrink
  *
- * Copyright (c) 2009-2011, Robert Hafner <tedivm@tedivm.com>.
+ * Copyright (c) 2009-2012, Robert Hafner <tedivm@tedivm.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,20 +42,21 @@
  * @version    Release: 0.4
  */
 
+ namespace JShrink;
 
 /**
- * JShrink
+ * Minifier
  *
- * Usage - JShrink::minify($js);
- * Usage - JShrink::minify($js, $options);
- * Usage - JShrink::minify($js, array('flaggedComments' => false));
+ * Usage - Minifier::minify($js);
+ * Usage - Minifier::minify($js, $options);
+ * Usage - Minifier::minify($js, array('flaggedComments' => false));
  *
- * @version	0.3
+ * @version	0.4
  * @package	JShrink
  * @author	Robert Hafner <tedivm@tedivm.com>
  * @license	http://www.opensource.org/licenses/bsd-license.php  BSD License
  */
-class JShrink
+class Minifier
 {
 	/**
 	 * The input javascript to be minified.
@@ -115,7 +116,7 @@ class JShrink
 	static protected $jshrink;
 
 	/**
-	 * JShrink::minify takes a string containing javascript and removes unneeded charactors in order to shrink the code
+	 * Minifier::minify takes a string containing javascript and removes unneeded charactors in order to shrink the code
 	 * without altering it's functionality.
 	 */
 	static public function minify($js, $options = array())
@@ -345,7 +346,7 @@ class JShrink
 				}
 
 				if($char === false)
-					throw new JShrinkException('Stray comment. ' . $this->index);
+					throw new \RuntimeException('Stray comment. ' . $this->index);
 
 				// if we're here c is part of the comment and therefore tossed
 				if(isset($this->c))
@@ -395,7 +396,7 @@ class JShrink
 						break 2;
 
 					case "\n":
-						throw new JShrinkException('Unclosed string. ' . $this->index);
+						throw new \RuntimeException('Unclosed string. ' . $this->index);
 						break;
 
 					case '\\':
@@ -425,7 +426,7 @@ class JShrink
 			}
 
 			if($this->a == "\n")
-				throw new JShrinkException('Stray regex pattern. ' . $this->index);
+				throw new \RuntimeException('Stray regex pattern. ' . $this->index);
 
 			echo $this->a;
 		}
@@ -455,7 +456,3 @@ class JShrink
 	}
 
 }
-
-// Adding a custom exception handler for your own projects just means changing this line
-class JShrinkException extends Exception {}
-?>
