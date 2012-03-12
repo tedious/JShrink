@@ -66,14 +66,14 @@ class Minifier
 	protected $input;
 
 	/**
-	 * The location of the charactor (in the input string) that is next to be processed.
+	 * The location of the character (in the input string) that is next to be processed.
 	 *
 	 * @var int
 	 */
 	protected $index = 0;
 
 	/**
-	 * The first of the charactors currently being looked at.
+	 * The first of the characters currently being looked at.
 	 *
 	 * @var string
 	 */
@@ -81,14 +81,14 @@ class Minifier
 
 
 	/**
-	 * The next charactor being looked at (after a);
+	 * The next character being looked at (after a);
 	 *
 	 * @var string
 	 */
 	protected $b = '';
 
 	/**
-	 * This charactor is only active when certain look ahead actions take place.
+	 * This character is only active when certain look ahead actions take place.
 	 *
 	 *  @var string
 	 */
@@ -116,7 +116,7 @@ class Minifier
 	static protected $jshrink;
 
 	/**
-	 * Minifier::minify takes a string containing javascript and removes unneeded charactors in order to shrink the code
+	 * Minifier::minify takes a string containing javascript and removes unneeded characters in order to shrink the code
 	 * without altering it's functionality.
 	 */
 	static public function minify($js, $options = array())
@@ -141,7 +141,7 @@ class Minifier
 	}
 
 	/**
-	 * Processes a javascript string and outputs only the required charactors, stripping out all unneeded charactors.
+	 * Processes a javascript string and outputs only the required characters, stripping out all unneeded characters.
 	 *
 	 * @param string $js The raw javascript to be minified
 	 * @param array $currentOptions Various runtime options in an associative array
@@ -185,7 +185,7 @@ class Minifier
 			{
 				// new lines
 				case "\n":
-					// if the next line is something that can't stand alone preserver the newline
+					// if the next line is something that can't stand alone preserve the newline
 					if(strpos('(-+{[@', $this->b) !== false)
 					{
 						echo $this->a;
@@ -280,11 +280,11 @@ class Minifier
 	}
 
 	/**
-	 * This function gets the next "real" charactor. It is essentially a wrapper around the getChar function that skips
+	 * This function gets the next "real" character. It is essentially a wrapper around the getChar function that skips
 	 * comments. This has signifigant peformance benefits as the skipping is done using native functions (ie, c code)
 	 * rather than in script php.
 	 *
-	 * @return string Next 'real' charactor to be processed.
+	 * @return string Next 'real' character to be processed.
 	 */
 	protected function getReal()
 	{
@@ -332,7 +332,7 @@ class Minifier
 					$this->getChar(); // get *
 					$this->getChar(); // get /
 
-					$char = $this->getChar(); // get next real charactor
+					$char = $this->getChar(); // get next real character
 
 					// if YUI-style comments are enabled we reinsert it into the stream
 					if($this->options['flaggedComments'] && $thirdCommentString == '!')
@@ -357,10 +357,10 @@ class Minifier
 	}
 
 	/**
-	 * Pushes the index ahead to the next instance of the supplied string. If it is found the first charactor of the
+	 * Pushes the index ahead to the next instance of the supplied string. If it is found the first character of the
 	 * string is returned.
 	 *
-	 * @return string|false Returns the first charactor of the string if found, false otherwise.
+	 * @return string|false Returns the first character of the string if found, false otherwise.
 	 */
 	protected function getNext($string)
 	{
@@ -380,7 +380,7 @@ class Minifier
 	protected function saveString()
 	{
 		$this->a = $this->b;
-		if($this->a == "'" || $this->a == '"') // is the charactor a ' or "
+		if($this->a == "'" || $this->a == '"') // is the character a quote
 		{
 			// save literal string
 			$stringType = $this->a;
@@ -446,7 +446,7 @@ class Minifier
 	}
 
 	/**
-	 * Checks to see if a charactor is alphanumeric.
+	 * Checks to see if a character is alphanumeric.
 	 *
 	 * @return bool
 	 */
