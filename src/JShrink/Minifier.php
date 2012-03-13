@@ -155,6 +155,8 @@ class Minifier
 
 		$js = str_replace("\r\n", "\n", $js);
 		$this->input = str_replace("\r", "\n", $js);
+		$this->input = preg_replace('/\h/u', ' ', $this->input);
+
 
 
 		$this->a = $this->getReal();
