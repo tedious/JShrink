@@ -126,7 +126,7 @@ class Minifier
 			$currentOptions = array_merge(self::$defaultOptions, $options);
 
 			if(!isset(self::$jshrink))
-				self::$jshrink = new JShrink();
+				self::$jshrink = new Minifier();
 
 			self::$jshrink->breakdownScript($js, $currentOptions);
 			return ob_get_clean();
