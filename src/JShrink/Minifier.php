@@ -186,7 +186,7 @@ class Minifier
 				// new lines
 				case "\n":
 					// if the next line is something that can't stand alone preserve the newline
-					if(strpos('(-+{[@', $this->b) !== false)
+					if($this->b != '' && strpos('(-+{[@', $this->b) !== false)
 					{
 						echo $this->a;
 						$this->saveString();
@@ -210,7 +210,7 @@ class Minifier
 					switch($this->b)
 					{
 						case "\n":
-							if(strpos('}])+-"\'', $this->a) !== false)
+							if($this->a != '' && strpos('}])+-"\'', $this->a) !== false)
 							{
 								echo $this->a;
 								$this->saveString();
