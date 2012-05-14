@@ -57,14 +57,26 @@ class JSIterator implements Iterator {
 
 class JShrinkTest extends PHPUnit_Framework_TestCase {
   /**
-   * @dataProvider minifyProvider
+   * @dataProvider JShrinkProvider
    */
-  public function testMinify($unminified, $minified) {
+  public function testJShrink($unminified, $minified) {
     require_once('src/JShrink/Minifier.php');
     $this->assertEquals(JShrink\Minifier::minify($unminified), $minified);
   }
 
-  public function minifyProvider() {
-    return new JSIterator('minify');
+  public function JShrinkProvider() {
+    return new JSIterator('minify/jshrink');
+  }
+  
+  /**
+   * @dataProvider uglifyProvider
+   */
+  public function testUglify($unminified, $minified) {
+    require_once('src/JShrink/Minifier.php');
+    $this->assertEquals(JShrink\Minifier::minify($unminified), $minified);
+  }
+
+  public function uglifyProvider() {
+    return new JSIterator('minify/uglify');
   }
 }
