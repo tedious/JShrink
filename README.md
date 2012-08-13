@@ -7,10 +7,10 @@ Minifying your code is simple call to a static function-
 ````
 <?php
 // Basic (default) usage.
-$minifiedCode = JShrink::minify($js);
+$minifiedCode = JShrink\Minifier::minify($js);
 
 // Disable YUI style comment preservation.
-$minifiedCode = JShrink::minify($js, array('flaggedComments' => false));
+$minifiedCode = JShrink\Minifier::minify($js, array('flaggedComments' => false));
 ````
 
 ### Results
