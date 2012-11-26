@@ -39,7 +39,7 @@
  * @copyright  2009-2012 Robert Hafner <tedivm@tedivm.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       https://github.com/tedivm/JShrink
- * @version    Release: 0.4
+ * @version    Release: 0.5.1
  */
 
  namespace JShrink;
