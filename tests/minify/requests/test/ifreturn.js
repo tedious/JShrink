@@ -5,5 +5,5 @@ function a(b) {
 		return 17;
 	}
 
-	return 3;
+return 3;
 }
