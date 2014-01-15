@@ -13,23 +13,23 @@ namespace JShrink\Test;
 
 use JShrink\Minifier;
 
-
 class JShrinkTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider JShrinkProvider
      */
-    public function testJShrink($testName, $unminified, $minified) {
+    public function testJShrink($testName, $unminified, $minified)
+    {
         $this->assertEquals(\JShrink\Minifier::minify($unminified), $minified, 'Running JShrink Test: ' . $testName);
     }
 
     /**
      * @dataProvider uglifyProvider
      */
-    public function testUglify($testName, $unminified, $minified) {
+    public function testUglify($testName, $unminified, $minified)
+    {
         $this->assertEquals(\JShrink\Minifier::minify($unminified), $minified, 'Running Uglify Test: ' . $testName);
     }
-
 
     public function getExampleFiles($group)
     {
@@ -39,10 +39,8 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
 
         $returnData = array();
 
-
         $testFiles = scandir($testDir);
-        foreach($testFiles as $testFile)
-        {
+        foreach ($testFiles as $testFile) {
             if(!file_exists(($expectDir . $testFile)))
                 continue;
 
@@ -55,15 +53,14 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
         return $returnData;
     }
 
-
-    public function uglifyProvider() {
+    public function uglifyProvider()
+    {
         return $this->getExampleFiles('uglify');
     }
 
-    public function JShrinkProvider() {
+    public function JShrinkProvider()
+    {
         return $this->getExampleFiles('jshrink');
     }
-
-
 
 }
