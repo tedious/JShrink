@@ -94,6 +94,10 @@ class Minifier
      * Minifier::minify takes a string containing javascript and removes
      * unneeded characters in order to shrink the code without altering it's
      * functionality.
+     * @param string $js
+     * @param array $options
+     * @return string
+     * @throws \JShrink\Exception
      */
     public static function minify($js, $options = array())
     {
@@ -105,6 +109,48 @@ class Minifier
                 self::$jshrink = new Minifier();
 
             self::$jshrink->breakdownScript($js, $currentOptions);
+
+            return ob_get_clean();
+
+        } catch (Exception $e) {
+            if(isset(self::$jshrink))
+                self::$jshrink->clean();
+
+            ob_end_clean();
+            throw $e;
+        }
+    }
+
+    /**
+     * Minifier::minifyFiles takes file(s) containing javascript and removes
+     * unneeded characters in order to shrink the code without altering it's
+     * functionality.
+     * @param string|array $js
+     * @param array $options
+     * @return string
+     * @throws \JShrink\Exception
+     */
+    public static function minifyFiles($files, $options = array())
+    {
+        if (is_string($files))
+            $files = array($files);
+
+        try {
+            ob_start();
+            $currentOptions = array_merge(self::$defaultOptions, $options);
+
+            if(!isset(self::$jshrink))
+                self::$jshrink = new Minifier();
+
+            foreach ($files as $file)
+            {
+                if (!\file_exists($file))
+                    throw new \RuntimeException("File doesn't exist: " . $file);
+
+                $js = \file_get_contents($file);
+
+                self::$jshrink->breakdownScript($js, $currentOptions);
+            }
 
             return ob_get_clean();
 
