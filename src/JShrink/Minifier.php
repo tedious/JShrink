@@ -106,7 +106,8 @@ class Minifier
 
             self::$jshrink->breakdownScript($js, $currentOptions);
 
-            return ob_get_clean();
+            // Sometimes there's a leading new line, so we trim that out here.
+            return ltrim(ob_get_clean());
 
         } catch (Exception $e) {
             if(isset(self::$jshrink))
@@ -133,6 +134,12 @@ class Minifier
 
         $js = str_replace("\r\n", "\n", $js);
         $this->input = str_replace("\r", "\n", $js);
+
+        // We add a newline to the end of the script to make it easier to deal
+        // with comments at the bottom of the script- this prevents the stray
+        // comment error that can occur.
+        $this->input .= PHP_EOL;
+
 
         $this->a = $this->getReal();
 
