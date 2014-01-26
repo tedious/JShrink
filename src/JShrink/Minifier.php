@@ -238,21 +238,27 @@ class Minifier
      */
     protected function getChar()
     {
+        // Check to see if we had anything in the look ahead buffer and use that.
         if (isset($this->c)) {
             $char = $this->c;
             unset($this->c);
+
+        // Otherwise we start pulling from the input.
         } else {
-            $tchar = substr($this->input, $this->index, 1);
-            if (isset($tchar) && $tchar !== false) {
-                $char = $tchar;
-                $this->index++;
-            } else {
+            $char = substr($this->input, $this->index, 1);
+
+            // If the next character doesn't exist return false.
+            if (isset($char) && $char === false) {
                 return false;
             }
+
+            // Otherwise increment the pointer and use this char.
+            $this->index++;
         }
 
+        // Normalize all whitespace except for the newline character into a
+        // standard space.
         if($char !== "\n" && ord($char) < 32)
-
             return ' ';
 
         return $char;
