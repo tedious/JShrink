@@ -398,21 +398,42 @@ class Minifier
                     break 2;
 
 
-                // New lines in strings without line delimiters are bad.
+
+                // New lines in strings without line delimiters are bad- actual
+                // new lines will be represented by the string \n and not the actual
+                // character, so those will be treated just fine using the switch
+                // block below.
                 case "\n":
                     throw new \RuntimeException('Unclosed string. ' . $this->index);
                     break;
 
 
-                // This prevents escaped characters from being removed
-                // This also catches multiline strings signified by a \
+                // Escaped characters get picked up here. If it's an escaped new line it's not really needed
                 case '\\':
+
+                    // a is a slash. We want to keep it, and the next character,
+                    // unless it's a new line. New lines as actual strings will be
+                    // preserved, but escaped new lines should be reduced.
+                    $this->b = $this->getChar();
+
+                    // If b is a new line we discard a and b and restart the loop.
+                    if($this->b == "\n") {
+                        break;
+                    }
+
+                    // echo out the escaped character and restart the loop.
+                    echo $this->a . $this->b;
+                    break;
+
+
+                // Since we're not dealing with any special cases we simply
+                // output the character and continue our loop.
+                default:
                     echo $this->a;
-                    $this->a = $this->getChar();
             }
 
             // Echo a- it'll be set to the next char at the start of the loop
-            echo $this->a;
+            // echo $this->a;
         }
     }
 
