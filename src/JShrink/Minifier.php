@@ -263,6 +263,8 @@ class Minifier
         $startIndex = $this->index;
         $char = $this->getChar();
 
+
+        // Check to see if we're potentially in a comment
         if ($char == '/') {
             $this->c = $this->getChar();
 
@@ -328,20 +330,25 @@ class Minifier
 
     /**
      * Pushes the index ahead to the next instance of the supplied string. If it
-     * is found the first character of the string is returned.
+     * is found the first character of the string is returned and the index is set
+     * to it's position.
      *
      * @param $string
      * @return string|false Returns the first character of the string or false.
      */
     protected function getNext($string)
     {
+        // Find the next occurrence of "string" after the current position.
         $pos = strpos($this->input, $string, $this->index);
 
+        // If it's not there return false.
         if($pos === false)
             return false;
 
+        // Adjust position of index to jump ahead to the asked for string
         $this->index = $pos;
 
+        // Return the first character of that string.
         return substr($this->input, $this->index, 1);
     }
 
@@ -429,7 +436,8 @@ class Minifier
 
     /**
      * Resets attributes that do not need to be stored between requests so that
-     * the next request is ready to go.
+     * the next request is ready to go. Another reason for this is to make sure
+     * the variables are cleared and are not taking up memory.
      */
     protected function clean()
     {
@@ -443,7 +451,7 @@ class Minifier
     /**
      * Checks to see if a character is alphanumeric.
      *
-     * @param $char A single character
+     * @param $char string Just one character
      * @return bool
      */
     protected static function isAlphaNumeric($char)
