@@ -101,18 +101,23 @@ class Minifier
             ob_start();
             $currentOptions = array_merge(self::$defaultOptions, $options);
 
-            if(!isset(self::$jshrink))
-                self::$jshrink = new Minifier();
-
-            self::$jshrink->breakdownScript($js, $currentOptions);
+            $jshrink = new Minifier();
+            $jshrink->breakdownScript($js, $currentOptions);
+            unset($jshrink);
 
             // Sometimes there's a leading new line, so we trim that out here.
             return ltrim(ob_get_clean());
 
         } catch (Exception $e) {
-            if(isset(self::$jshrink))
-                self::$jshrink->clean();
 
+            if(isset($jshrink)){
+                // Since the breakdownScript function probably wasn't finished
+                // we clean it out before discarding it.
+                $jshrink->clean();
+                unset($jshrink);
+            }
+
+            // without this call things get weird, with partially outputted js.
             ob_end_clean();
             throw $e;
         }
@@ -127,9 +132,6 @@ class Minifier
      */
     protected function breakdownScript($js, $currentOptions)
     {
-        // reset work attributes in case this isn't the first run.
-        $this->clean();
-
         $this->options = $currentOptions;
 
         $js = str_replace("\r\n", "\n", $js);
