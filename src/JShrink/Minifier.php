@@ -255,6 +255,7 @@ class Minifier
      * performance benefits as the skipping is done using native functions (ie,
      * c code) rather than in script php.
      *
+     * @throws \RuntimeException
      * @return string Next 'real' character to be processed.
      */
     protected function getReal()
@@ -329,6 +330,7 @@ class Minifier
      * Pushes the index ahead to the next instance of the supplied string. If it
      * is found the first character of the string is returned.
      *
+     * @param $string
      * @return string|false Returns the first character of the string or false.
      */
     protected function getNext($string)
@@ -336,7 +338,6 @@ class Minifier
         $pos = strpos($this->input, $string, $this->index);
 
         if($pos === false)
-
             return false;
 
         $this->index = $pos;
@@ -351,33 +352,58 @@ class Minifier
      */
     protected function saveString()
     {
+        // saveString is always called after a gets cleared, so we push b into
+        // that spot.
         $this->a = $this->b;
-        if ($this->a == "'" || $this->a == '"') { // is the character a quote
-            // save literal string
-            $stringType = $this->a;
 
-            while (1) {
-                echo $this->a;
-                $this->a = $this->getChar();
+        // If this isn't a string we don't need to do anything.
+        if ($this->a != "'" && $this->a != '"') {
+            return;
+        }
 
-                switch ($this->a) {
-                    case $stringType:
-                        break 2;
 
-                    case "\n":
-                        throw new \RuntimeException('Unclosed string. ' . $this->index);
-                        break;
+        // String type is the quote used, " or '
+        $stringType = $this->a;
 
-                    case '\\':
-                        echo $this->a;
-                        $this->a = $this->getChar();
-                }
+        // Echo out that starting quote
+        echo $this->a;
+
+
+        // Loop until the string is done
+        while (1) {
+
+            // Grab the very next character and load it into a
+            $this->a = $this->getChar();
+
+            switch ($this->a) {
+
+                // If the string opener (single or double quote) is used
+                // output it and break out of the while loop-
+                // The string is finished!
+                case $stringType:
+                    break 2;
+
+
+                // New lines in strings without line delimiters are bad.
+                case "\n":
+                    throw new \RuntimeException('Unclosed string. ' . $this->index);
+                    break;
+
+
+                // This prevents escaped characters from being removed
+                // This also catches multiline strings signified by a \
+                case '\\':
+                    echo $this->a;
+                    $this->a = $this->getChar();
             }
+
+            // Echo a- it'll be set to the next char at the start of the loop
+            echo $this->a;
         }
     }
 
     /**
-     * When a regular expression is detected this funcion crawls for the end of
+     * When a regular expression is detected this function crawls for the end of
      * it and saves the whole regex.
      */
     protected function saveRegex()
@@ -417,6 +443,7 @@ class Minifier
     /**
      * Checks to see if a character is alphanumeric.
      *
+     * @param $char A single character
      * @return bool
      */
     protected static function isAlphaNumeric($char)
