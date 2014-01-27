@@ -84,13 +84,6 @@ class Minifier
     protected static $defaultOptions = array('flaggedComments' => true);
 
     /**
-     * Contains a copy of the JShrink object used to run minification. This is
-     * only used internally, and is only stored for performance reasons. There
-     * is no internal data shared between minification requests.
-     */
-    protected static $jshrink;
-
-    /**
      * Minifier::minify takes a string containing javascript and removes
      * unneeded characters in order to shrink the code without altering it's
      * functionality.
@@ -138,8 +131,8 @@ class Minifier
         $this->input = str_replace("\r", "\n", $js);
 
         // We add a newline to the end of the script to make it easier to deal
-        // with comments at the bottom of the script- this prevents the stray
-        // comment error that can occur.
+        // with comments at the bottom of the script- this prevents the unclosed
+        // comment error that can otherwise occur.
         $this->input .= PHP_EOL;
 
 
