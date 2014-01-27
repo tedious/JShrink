@@ -465,7 +465,7 @@ class Minifier
             }
 
             if($this->a == "\n")
-                throw new \RuntimeException('Unclosed regex pattern as position: ' . $this->index);
+                throw new \RuntimeException('Unclosed regex pattern at position: ' . $this->index);
 
             echo $this->a;
         }
