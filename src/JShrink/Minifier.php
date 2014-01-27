@@ -108,7 +108,7 @@ class Minifier
             // Sometimes there's a leading new line, so we trim that out here.
             return ltrim(ob_get_clean());
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             if(isset($jshrink)){
                 // Since the breakdownScript function probably wasn't finished
@@ -332,7 +332,7 @@ class Minifier
                 }
 
                 if($char === false)
-                    throw new \RuntimeException('Stray comment. ' . $this->index);
+                    throw new \RuntimeException('Unclosed multiline comment at position: ' . ($this->index - 2));
 
                 // if we're here c is part of the comment and therefore tossed
                 if(isset($this->c))
@@ -374,6 +374,8 @@ class Minifier
      */
     protected function saveString()
     {
+        $startpos = $this->index;
+
         // saveString is always called after a gets cleared, so we push b into
         // that spot.
         $this->a = $this->b;
@@ -412,7 +414,7 @@ class Minifier
                 // character, so those will be treated just fine using the switch
                 // block below.
                 case "\n":
-                    throw new \RuntimeException('Unclosed string. ' . $this->index);
+                    throw new \RuntimeException('Unclosed string at position: ' . $startpos );
                     break;
 
 
@@ -463,7 +465,7 @@ class Minifier
             }
 
             if($this->a == "\n")
-                throw new \RuntimeException('Stray regex pattern. ' . $this->index);
+                throw new \RuntimeException('Unclosed regex pattern as position: ' . $this->index);
 
             echo $this->a;
         }

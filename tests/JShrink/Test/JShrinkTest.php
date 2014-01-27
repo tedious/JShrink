@@ -17,6 +17,7 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException RuntimeException
+     * @expectedExceptionMessage Unclosed multiline comment at position: 1
      */
     public function testUnclosedCommentException()
     {
@@ -25,6 +26,7 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException RuntimeException
+     * @expectedExceptionMessage Unclosed string at position: 14
      */
     public function testUnclosedStringException()
     {
