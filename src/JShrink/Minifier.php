@@ -99,7 +99,7 @@ class Minifier
     {
         try {
             ob_start();
-            $currentOptions = array_merge(self::$defaultOptions, $options);
+            $currentOptions = array_merge(static::$defaultOptions, $options);
 
             $jshrink = new Minifier();
             $jshrink->breakdownScript($js, $currentOptions);
@@ -184,7 +184,7 @@ class Minifier
                     // otherwise we treat the newline like a space
 
                 case ' ':
-                    if(self::isAlphaNumeric($this->b))
+                    if(static::isAlphaNumeric($this->b))
                         echo $this->a;
 
                     $this->saveString();
@@ -198,7 +198,7 @@ class Minifier
                                 $this->saveString();
                                 break;
                             } else {
-                                if (self::isAlphaNumeric($this->a)) {
+                                if (static::isAlphaNumeric($this->a)) {
                                     echo $this->a;
                                     $this->saveString();
                                 }
@@ -206,7 +206,7 @@ class Minifier
                             break;
 
                         case ' ':
-                            if(!self::isAlphaNumeric($this->a))
+                            if(!static::isAlphaNumeric($this->a))
                                 break;
 
                         default:
