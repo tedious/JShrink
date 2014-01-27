@@ -33,20 +33,32 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
         \JShrink\Minifier::minify('var string = "This string is hanging out.');
     }
 
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Unclosed regex pattern at position: 23
+     */
+    public function testUnclosedRegexException()
+    {
+        \JShrink\Minifier::minify('var re = /[^A-Za-z0-9_
+        var string = "Another Filler"');
+    }
+
+
     /**
      * @dataProvider JShrinkProvider
      */
-    public function testJShrink($testName, $unminified, $minified)
+    public function testJShrink($testName, $input, $output)
     {
-        $this->assertEquals(\JShrink\Minifier::minify($unminified), $minified, 'Running JShrink Test: ' . $testName);
+        $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running JShrink Test: ' . $testName);
     }
 
     /**
      * @dataProvider uglifyProvider
      */
-    public function testUglify($testName, $unminified, $minified)
+    public function testUglify($testName, $input, $output)
     {
-        $this->assertEquals(\JShrink\Minifier::minify($unminified), $minified, 'Running Uglify Test: ' . $testName);
+        $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Uglify Test: ' . $testName);
     }
 
 
@@ -54,9 +66,9 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
      * @group requests
      * @dataProvider requestProvider
      */
-    public function testRequest($testName, $unminified, $minified)
+    public function testRequest($testName, $input, $output)
     {
-        $this->assertEquals(\JShrink\Minifier::minify($unminified), $minified, 'Running Uglify Test: ' . $testName);
+        $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Uglify Test: ' . $testName);
     }
 
 
@@ -87,10 +99,10 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
             if(substr($testFile, -3) !== '.js' || !file_exists(($expectDir . $testFile)))
                 continue;
 
-            $testContents = file_get_contents($testDir . $testFile);
-            $testResults = file_get_contents($expectDir . $testFile);
+            $testInput = file_get_contents($testDir . $testFile);
+            $testOutput = file_get_contents($expectDir . $testFile);
 
-            $returnData[] = array($testFile, $testContents, $testResults);
+            $returnData[] = array($testFile, $testInput, $testOutput);
         }
 
         return $returnData;
