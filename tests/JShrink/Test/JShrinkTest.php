@@ -31,17 +31,42 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(\JShrink\Minifier::minify($unminified), $minified, 'Running Uglify Test: ' . $testName);
     }
 
-    public function getExampleFiles($group)
+
+    /**
+     * @group requests
+     * @dataProvider requestProvider
+     */
+    public function testRequest($testName, $unminified, $minified)
+    {
+        $this->assertEquals(\JShrink\Minifier::minify($unminified), $minified, 'Running Uglify Test: ' . $testName);
+    }
+
+
+    /**
+     * This function loads all of the test cases from the specified group.
+     * Groups are created simply by populating the appropriate directories:
+     *
+     *    /tests/Resources/GROUPNAME/input/
+     *    /tests/Resources/GROUPNAME/output/
+     *
+     * Each test case should have two identically named files, with the raw
+     * javascript going in the test folder and the expected results to be in
+     * the output folder.
+     *
+     * @param $group string
+     * @return array
+     */
+    public function getTestFiles($group)
     {
         $baseDir = __DIR__ . '/../../Resources/' . $group . '/';
-        $testDir = $baseDir . 'test/';
-        $expectDir = $baseDir . 'expect/';
+        $testDir = $baseDir . 'input/';
+        $expectDir = $baseDir . 'output/';
 
         $returnData = array();
 
         $testFiles = scandir($testDir);
         foreach ($testFiles as $testFile) {
-            if(!file_exists(($expectDir . $testFile)))
+            if(substr($testFile, -3) !== '.js' || !file_exists(($expectDir . $testFile)))
                 continue;
 
             $testContents = file_get_contents($testDir . $testFile);
@@ -55,12 +80,17 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
 
     public function uglifyProvider()
     {
-        return $this->getExampleFiles('uglify');
+        return $this->getTestFiles('uglify');
     }
 
     public function JShrinkProvider()
     {
-        return $this->getExampleFiles('jshrink');
+        return $this->getTestFiles('jshrink');
+    }
+
+    public function requestProvider()
+    {
+        return $this->getTestFiles('requests');
     }
 
 }
