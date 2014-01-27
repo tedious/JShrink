@@ -16,6 +16,22 @@ use JShrink\Minifier;
 class JShrinkTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @expectedException RuntimeException
+     */
+    public function testUnclosedCommentException()
+    {
+        \JShrink\Minifier::minify('/* This comment is hanging out.');
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testUnclosedStringException()
+    {
+        \JShrink\Minifier::minify('var string = "This string is hanging out.');
+    }
+
+    /**
      * @dataProvider JShrinkProvider
      */
     public function testJShrink($testName, $unminified, $minified)
