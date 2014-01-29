@@ -33,7 +33,6 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
         \JShrink\Minifier::minify('var string = "This string is hanging out.');
     }
 
-
     /**
      * @expectedException RuntimeException
      * @expectedExceptionMessage Unclosed regex pattern at position: 23
@@ -43,7 +42,6 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
         \JShrink\Minifier::minify('var re = /[^A-Za-z0-9_
         var string = "Another Filler"');
     }
-
 
     /**
      * @dataProvider JShrinkProvider
@@ -61,7 +59,6 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Uglify Test: ' . $testName);
     }
 
-
     /**
      * @group requests
      * @dataProvider requestProvider
@@ -70,7 +67,6 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Uglify Test: ' . $testName);
     }
-
 
     /**
      * This function loads all of the test cases from the specified group.

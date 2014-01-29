@@ -103,7 +103,7 @@ class Minifier
 
         } catch (\Exception $e) {
 
-            if(isset($jshrink)){
+            if (isset($jshrink)) {
                 // Since the breakdownScript function probably wasn't finished
                 // we clean it out before discarding it.
                 $jshrink->clean();
@@ -252,6 +252,7 @@ class Minifier
         // Normalize all whitespace except for the newline character into a
         // standard space.
         if($char !== "\n" && ord($char) < 32)
+
             return ' ';
 
         return $char;
@@ -264,7 +265,7 @@ class Minifier
      * c code) rather than in script php.
      *
      * @throws \RuntimeException
-     * @return string Next 'real' character to be processed.
+     * @return string            Next 'real' character to be processed.
      */
     protected function getReal()
     {
@@ -351,6 +352,7 @@ class Minifier
 
         // If it's not there return false.
         if($pos === false)
+
             return false;
 
         // Adjust position of index to jump ahead to the asked for string
@@ -377,7 +379,6 @@ class Minifier
         if ($this->a != "'" && $this->a != '"') {
             return;
         }
-
 
         // String type is the quote used, " or '
         $stringType = $this->a;
@@ -420,7 +421,7 @@ class Minifier
                     $this->b = $this->getChar();
 
                     // If b is a new line we discard a and b and restart the loop.
-                    if($this->b == "\n") {
+                    if ($this->b == "\n") {
                         break;
                     }
 
