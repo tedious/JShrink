@@ -9,5 +9,4 @@ php:
 before_script: composer install --dev
 
 script:
-    -phpunit --verbose --coverage-text
-    -vendor/fabpot/php-cs-fixer/php-cs-fixer fix ./src --dry-run --level="all" -vv
+    - phpunit --verbose --coverage-text && ./vendor/fabpot/php-cs-fixer/php-cs-fixer fix ./src --dry-run --level="all" -vv
