@@ -513,7 +513,13 @@ class Minifier
     {
         /* lock things like <code>"asd" + ++x;</code> */
         $lock = '"LOCK---' . crc32(time()) . '"';
+
+        $matches = array();
         preg_match('/([+-])(\s+)([+-])/', $js, $matches);
+        if (empty($matches)) {
+            return $js;
+        }
+
         $this->locks[$lock] = $matches[2];
 
         $js = preg_replace('/([+-])\s+([+-])/', "$1{$lock}$2", $js);
@@ -530,6 +536,10 @@ class Minifier
      */
     protected function unlock($js)
     {
+        if (!count($this->locks)) {
+            return $js;
+        }
+
         foreach ($this->locks as $lock => $replacement) {
             $js = str_replace($lock, $replacement, $js);
         }
