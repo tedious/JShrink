@@ -84,7 +84,7 @@ class Minifier
     protected static $defaultOptions = array('flaggedComments' => true);
 
     /**
-     * Contains lock ids which are used to replace certain code patterns and 
+     * Contains lock ids which are used to replace certain code patterns and
      * prevent them from being minified
      *
      * @var array
@@ -513,13 +513,15 @@ class Minifier
     {
         /* lock things like <code>"asd" + ++x;</code> */
         $lock = '"LOCK---' . crc32(time()) . '"';
-        $this->locks[$lock] = ' ';
+        preg_match('/([+-])(\s+)([+-])/', $js, $matches);
+        $this->locks[$lock] = $matches[2];
+
         $js = preg_replace('/([+-])\s+([+-])/', "$1{$lock}$2", $js);
         /* -- */
-        
+
         return $js;
     }
-    
+
     /**
      * Replace "locks" with the original characters
      *
@@ -531,8 +533,8 @@ class Minifier
         foreach ($this->locks as $lock => $replacement) {
             $js = str_replace($lock, $replacement, $js);
         }
-        
+
         return $js;
     }
-    
+
 }
