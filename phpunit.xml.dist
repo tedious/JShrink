@@ -17,4 +17,7 @@
             <directory suffix=".php">./src/JShrink/</directory>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+    </logging>
 </phpunit>
