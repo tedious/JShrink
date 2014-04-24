@@ -104,7 +104,7 @@ class Minifier
 
             $jshrink = new Minifier();
             $js = $jshrink->lock($js);
-            $jshrink->breakdownScript($js, $currentOptions);
+            $jshrink->minifyDirectToOutput($js, $currentOptions);
 
             // Sometimes there's a leading new line, so we trim that out here.
             $js = ltrim(ob_get_clean());
@@ -135,10 +135,22 @@ class Minifier
      * @param string $js             The raw javascript to be minified
      * @param array  $currentOptions Various runtime options in an associative array
      */
-    protected function breakdownScript($js, $currentOptions)
+    protected function minifyDirectToOutput($js, $currentOptions)
     {
-        $this->options = $currentOptions;
+        $this->initialize($js, $currentOptions);
+        $this->loop();
+        $this->clean();
+    }
 
+    /**
+     *  Initializes internal variables, normalizes new lines,
+     *
+     * @param $js string
+     * @param $currentOptions array
+     */
+    protected function initialize($js, $currentOptions)
+    {
+        $this->options = array_merge(static::$defaultOptions, $options);
         $js = str_replace("\r\n", "\n", $js);
         $this->input = str_replace("\r", "\n", $js);
 
@@ -147,46 +159,34 @@ class Minifier
         // comment error that can otherwise occur.
         $this->input .= PHP_EOL;
 
-
         $this->a = $this->getReal();
-
-        // the only time the length can be higher than 1 is if a conditional
-        // comment needs to be displayed and the only time that can happen for
-        // $a is on the very first run
-        while (strlen($this->a) > 1) {
-            echo $this->a;
-            $this->a = $this->getReal();
-        }
-
         $this->b = $this->getReal();
+    }
 
+    /**
+     * The primary action occurs here. This function loops through the input string,
+     * outputting anything that's relevant and discarding anything that is not.
+     */
+    protected function loop()
+    {
         while ($this->a !== false && !is_null($this->a) && $this->a !== '') {
-
-            // now we give $b the same check for conditional comments we gave $a
-            // before we began looping
-            if (strlen($this->b) > 1) {
-                echo $this->a . $this->b;
-                $this->a = $this->getReal();
-                $this->b = $this->getReal();
-                continue;
-            }
 
             switch ($this->a) {
                 // new lines
                 case "\n":
-                    // if the next line is something that can't stand alone
-                    // preserve the newline
+                    // if the next line is something that can't stand alone preserve the newline
                     if (strpos('(-+{[@', $this->b) !== false) {
                         echo $this->a;
                         $this->saveString();
                         break;
                     }
 
-                    // if its a space we move down to the string test below
+                    // if B is a space we skip the rest of the switch block and go down to the
+                    // string/regex check below, resetting $this->b with getReal
                     if($this->b === ' ')
                         break;
 
-                    // otherwise we treat the newline like a space
+                // otherwise we treat the newline like a space
 
                 case ' ':
                     if(static::isAlphaNumeric($this->b))
@@ -233,7 +233,20 @@ class Minifier
             if(($this->b == '/' && strpos('(,=:[!&|?', $this->a) !== false))
                 $this->saveRegex();
         }
-        $this->clean();
+    }
+
+    /**
+     * Resets attributes that do not need to be stored between requests so that
+     * the next request is ready to go. Another reason for this is to make sure
+     * the variables are cleared and are not taking up memory.
+     */
+    protected function clean()
+    {
+        unset($this->input);
+        $this->index = 0;
+        $this->a = $this->b = '';
+        unset($this->c);
+        unset($this->options);
     }
 
     /**
@@ -284,7 +297,6 @@ class Minifier
     {
         $startIndex = $this->index;
         $char = $this->getChar();
-
 
         // Check to see if we're potentially in a comment
         if ($char !== '/') {
@@ -509,20 +521,6 @@ class Minifier
             echo $this->a;
         }
         $this->b = $this->getReal();
-    }
-
-    /**
-     * Resets attributes that do not need to be stored between requests so that
-     * the next request is ready to go. Another reason for this is to make sure
-     * the variables are cleared and are not taking up memory.
-     */
-    protected function clean()
-    {
-        unset($this->input);
-        $this->index = 0;
-        $this->a = $this->b = '';
-        unset($this->c);
-        unset($this->options);
     }
 
     /**
