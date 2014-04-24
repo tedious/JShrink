@@ -277,7 +277,8 @@ class Minifier
      * c code) rather than in script php.
      *
      * @throws \RuntimeException
-     * @return string            Next 'real' character to be processed.
+     *
+     * @return string Next 'real' character to be processed.
      */
     protected function getReal()
     {
@@ -286,70 +287,86 @@ class Minifier
 
 
         // Check to see if we're potentially in a comment
-        if ($char == '/') {
-            $this->c = $this->getChar();
-
-            if ($this->c == '/') {
-                $thirdCommentString = substr($this->input, $this->index, 1);
-
-                // kill rest of line
-                $this->getNext("\n");
-
-                if ($thirdCommentString == '@') {
-                    $endPoint = ($this->index) - $startIndex;
-                    unset($this->c);
-                    $char = "\n" . substr($this->input, $startIndex, $endPoint);
-                } else {
-                    $char = $this->getChar();
-                    $char = $this->getChar();
-                }
-
-            } elseif ($this->c == '*') {
-
-                $this->getChar(); // current C
-                $thirdCommentString = $this->getChar();
-
-                // kill everything up to the next */ if it's there
-                if ($this->getNext('*/')) {
-
-                    $this->getChar(); // get *
-                    $this->getChar(); // get /
-                    $char = $this->getChar(); // get next real character
-
-                    // Now we reinsert conditional comments and YUI-style licensing comments
-                    if (($this->options['flaggedComments'] && $thirdCommentString == '!')
-                        || ($thirdCommentString == '@') ) {
-
-                        // If conditional comments or flagged comments are not the first thing in the script
-                        // we need to echo a and fill it with a space before moving on.
-                        if ($startIndex > 0) {
-                            echo $this->a;
-                            $this->a = " ";
-
-                            // If the comment started on a new line we let it stay on the new line
-                            if ($this->input[($startIndex - 1)] == "\n") {
-                                echo "\n";
-                            }
-                        }
-
-                        $endPoint = ($this->index - 1) - $startIndex;
-                        echo substr($this->input, $startIndex, $endPoint);
-
-                        return $char;
-                    }
-
-                } else {
-                    $char = false;
-                }
-
-                if($char === false)
-                    throw new \RuntimeException('Unclosed multiline comment at position: ' . ($this->index - 2));
-
-                // if we're here c is part of the comment and therefore tossed
-                if(isset($this->c))
-                    unset($this->c);
-            }
+        if ($char !== '/') {
+            return $char;
         }
+
+        $this->c = $this->getChar();
+
+        if ($this->c == '/') {
+            return $this->processOneLineComments($startIndex);
+
+        } elseif ($this->c == '*') {
+            return $this->processMultiLineComments($startIndex);
+        }
+
+        return $char;
+    }
+
+    protected function processOneLineComments($startIndex)
+    {
+        $thirdCommentString = substr($this->input, $this->index, 1);
+
+        // kill rest of line
+        $this->getNext("\n");
+
+        if ($thirdCommentString == '@') {
+            $endPoint = ($this->index) - $startIndex;
+            unset($this->c);
+            $char = "\n" . substr($this->input, $startIndex, $endPoint);
+        } else {
+            // first one is contents of $this->c
+            $this->getChar();
+            $char = $this->getChar();
+        }
+
+        return $char;
+    }
+
+    protected function processMultiLineComments($startIndex)
+    {
+        $this->getChar(); // current C
+        $thirdCommentString = $this->getChar();
+
+        // kill everything up to the next */ if it's there
+        if ($this->getNext('*/')) {
+
+            $this->getChar(); // get *
+            $this->getChar(); // get /
+            $char = $this->getChar(); // get next real character
+
+            // Now we reinsert conditional comments and YUI-style licensing comments
+            if (($this->options['flaggedComments'] && $thirdCommentString == '!')
+                || ($thirdCommentString == '@') ) {
+
+                // If conditional comments or flagged comments are not the first thing in the script
+                // we need to echo a and fill it with a space before moving on.
+                if ($startIndex > 0) {
+                    echo $this->a;
+                    $this->a = " ";
+
+                    // If the comment started on a new line we let it stay on the new line
+                    if ($this->input[($startIndex - 1)] == "\n") {
+                        echo "\n";
+                    }
+                }
+
+                $endPoint = ($this->index - 1) - $startIndex;
+                echo substr($this->input, $startIndex, $endPoint);
+
+                return $char;
+            }
+
+        } else {
+            $char = false;
+        }
+
+        if($char === false)
+            throw new \RuntimeException('Unclosed multiline comment at position: ' . ($this->index - 2));
+
+        // if we're here c is part of the comment and therefore tossed
+        if(isset($this->c))
+            unset($this->c);
 
         return $char;
     }
