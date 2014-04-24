@@ -309,6 +309,7 @@ class Minifier
                 $this->getChar(); // current C
                 $thirdCommentString = $this->getChar();
 
+                /*
                 if ($thirdCommentString == '@') {
                     // conditional comment
 
@@ -319,7 +320,9 @@ class Minifier
 
                     return '/';
 
-                } elseif ($this->getNext('*/')) {
+                } else
+                    */
+                    if ($this->getNext('*/')) {
                 // kill everything up to the next */
 
                     $this->getChar(); // get *
@@ -327,10 +330,26 @@ class Minifier
 
                     $char = $this->getChar(); // get next real character
 
-                    // if YUI-style comments are enabled we reinsert it into the stream
-                    if ($this->options['flaggedComments'] && $thirdCommentString == '!') {
+
+                    // Now we reinsert conditional comments and YUI-style licensing comments    
+                    if (($this->options['flaggedComments'] && $thirdCommentString == '!')
+                        || ($thirdCommentString == '@') ) {
+
+                        // If conditional comments or flagged comments are not the first thing in the script
+                        // we need to echo a and fill it with a space before moving on.
+                        if ($startIndex > 0) {
+                            echo $this->a;
+                            $this->a = " ";
+
+                            // If the comment started on a new line we let it stay on the new line
+                            if ($this->input[($startIndex - 1)] == "\n") {
+                                echo "\n";
+                            }
+                        }
+
                         $endPoint = ($this->index - 1) - $startIndex;
-                        echo "\n" . substr($this->input, $startIndex, $endPoint) . "\n";
+                        echo substr($this->input, $startIndex, $endPoint);
+                        return $char;
                     }
 
                 } else {
