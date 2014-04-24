@@ -92,9 +92,13 @@ class Minifier
     protected $locks = array();
 
     /**
-     * Minifier::minify takes a string containing javascript and removes
-     * unneeded characters in order to shrink the code without altering it's
-     * functionality.
+     * Takes a string containing javascript and removes unneeded characters in
+     * order to shrink the code without altering it's functionality.
+     *
+     * @param  string      $js      The raw javascript to be minified
+     * @param  array       $options Various runtime options in an associative array
+     * @throws \Exception
+     * @return bool|string
      */
     public static function minify($js, $options = array())
     {
@@ -131,9 +135,8 @@ class Minifier
      * Processes a javascript string and outputs only the required characters,
      * stripping out all unneeded characters.
      *
-     * @param string $js The raw javascript to be minified
-     * @param $options array
-     * @internal param array $currentOptions Various runtime options in an associative array
+     * @param string $js      The raw javascript to be minified
+     * @param array  $options Various runtime options in an associative array
      */
     protected function minifyDirectToOutput($js, $options)
     {
@@ -145,9 +148,8 @@ class Minifier
     /**
      *  Initializes internal variables, normalizes new lines,
      *
-     * @param $js string
-     * @param $options array
-     * @internal param array $currentOptions
+     * @param string $js      The raw javascript to be minified
+     * @param array  $options Various runtime options in an associative array
      */
     protected function initialize($js, $options)
     {
@@ -290,9 +292,9 @@ class Minifier
      * performance benefits as the skipping is done using native functions (ie,
      * c code) rather than in script php.
      *
-     * @throws \RuntimeException
      *
-     * @return string Next 'real' character to be processed.
+     * @return string            Next 'real' character to be processed.
+     * @throws \RuntimeException
      */
     protected function getReal()
     {
@@ -320,7 +322,7 @@ class Minifier
      * Removed one line comments, with the exception of some very specific types of
      * conditional comments.
      *
-     * @param $startIndex int    The index point where "getReal" function started
+     * @param  int    $startIndex The index point where "getReal" function started
      * @return string
      */
     protected function processOneLineComments($startIndex)
@@ -347,7 +349,7 @@ class Minifier
      * Skips multiline comments where appropriate, and includes them where needed.
      * Conditional comments and "license" style blocks are preserved.
      *
-     * @param $startIndex int    The index point where "getReal" function started
+     * @param  int               $startIndex The index point where "getReal" function started
      * @return bool|string       False if there's no character
      * @throws \RuntimeException Unclosed comments will throw an error
      */
@@ -404,7 +406,7 @@ class Minifier
      * is found the first character of the string is returned and the index is set
      * to it's position.
      *
-     * @param $string string
+     * @param  string       $string
      * @return string|false Returns the first character of the string or false.
      */
     protected function getNext($string)
@@ -527,7 +529,7 @@ class Minifier
     /**
      * Checks to see if a character is alphanumeric.
      *
-     * @param $char string Just one character
+     * @param  string $char Just one character
      * @return bool
      */
     protected static function isAlphaNumeric($char)
@@ -538,7 +540,7 @@ class Minifier
     /**
      * Replace patterns in the given string and store the replacement
      *
-     * @param $js string The string to lock
+     * @param  string $js The string to lock
      * @return bool
      */
     protected function lock($js)
@@ -563,7 +565,7 @@ class Minifier
     /**
      * Replace "locks" with the original characters
      *
-     * @param $js string The string to unlock
+     * @param  string $js The string to unlock
      * @return bool
      */
     protected function unlock($js)
