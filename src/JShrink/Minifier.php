@@ -84,6 +84,14 @@ class Minifier
     protected static $defaultOptions = array('flaggedComments' => true);
 
     /**
+     * Contains lock ids which are used to replace certain code patterns and
+     * prevent them from being minified
+     *
+     * @var array
+     */
+    protected $locks = array();
+
+    /**
      * Minifier::minify takes a string containing javascript and removes
      * unneeded characters in order to shrink the code without altering it's
      * functionality.
@@ -95,11 +103,15 @@ class Minifier
             $currentOptions = array_merge(static::$defaultOptions, $options);
 
             $jshrink = new Minifier();
+            $js = $jshrink->lock($js);
             $jshrink->breakdownScript($js, $currentOptions);
-            unset($jshrink);
 
             // Sometimes there's a leading new line, so we trim that out here.
-            return ltrim(ob_get_clean());
+            $js = ltrim(ob_get_clean());
+            $js = $jshrink->unlock($js);
+            unset($jshrink);
+
+            return $js;
 
         } catch (\Exception $e) {
 
@@ -489,6 +501,50 @@ class Minifier
     protected static function isAlphaNumeric($char)
     {
         return preg_match('/^[\w\$]$/', $char) === 1 || $char == '/';
+    }
+
+    /**
+     * Replace patterns in the given string and store the replacement
+     *
+     * @param $js string The string to lock
+     * @return bool
+     */
+    protected function lock($js)
+    {
+        /* lock things like <code>"asd" + ++x;</code> */
+        $lock = '"LOCK---' . crc32(time()) . '"';
+
+        $matches = array();
+        preg_match('/([+-])(\s+)([+-])/', $js, $matches);
+        if (empty($matches)) {
+            return $js;
+        }
+
+        $this->locks[$lock] = $matches[2];
+
+        $js = preg_replace('/([+-])\s+([+-])/', "$1{$lock}$2", $js);
+        /* -- */
+
+        return $js;
+    }
+
+    /**
+     * Replace "locks" with the original characters
+     *
+     * @param $js string The string to unlock
+     * @return bool
+     */
+    protected function unlock($js)
+    {
+        if (!count($this->locks)) {
+            return $js;
+        }
+
+        foreach ($this->locks as $lock => $replacement) {
+            $js = str_replace($lock, $replacement, $js);
+        }
+
+        return $js;
     }
 
 }
