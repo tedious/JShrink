@@ -44,6 +44,7 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @jshrink
      * @dataProvider JShrinkProvider
      */
     public function testJShrink($testName, $input, $output)
@@ -52,6 +53,7 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @uglify
      * @dataProvider uglifyProvider
      */
     public function testUglify($testName, $input, $output)
@@ -63,9 +65,18 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
      * @group requests
      * @dataProvider requestProvider
      */
-    public function testRequest($testName, $input, $output)
+    public function testRequests($testName, $input, $output)
     {
-        $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Uglify Test: ' . $testName);
+        $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running User Requested Test: ' . $testName);
+    }
+
+    /**
+     * @group development
+     * @dataProvider developmentProvider
+     */
+    public function testDevelopment($testName, $input, $output)
+    {
+        $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Development Test: ' . $testName);
     }
 
     /**
@@ -119,4 +130,8 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
         return $this->getTestFiles('requests');
     }
 
+    public function developmentProvider()
+    {
+        return $this->getTestFiles('development');
+    }
 }
