@@ -162,7 +162,9 @@ class Minifier
         // comment error that can otherwise occur.
         $this->input .= PHP_EOL;
 
-        $this->a = $this->getReal();
+        // Populate "a" with a new line, "b" with the first character, before
+        // entering the loop
+        $this->a = "\n";
         $this->b = $this->getReal();
     }
 
@@ -430,6 +432,7 @@ class Minifier
      * When a javascript string is detected this function crawls for the end of
      * it and saves the whole string.
      *
+     * @throws \RuntimeException Unclosed strings will throw an error
      */
     protected function saveString()
     {
@@ -504,6 +507,8 @@ class Minifier
     /**
      * When a regular expression is detected this function crawls for the end of
      * it and saves the whole regex.
+     *
+     * @throws \RuntimeException Unclosed regex will throw an error
      */
     protected function saveRegex()
     {
