@@ -100,11 +100,10 @@ class Minifier
     {
         try {
             ob_start();
-            $currentOptions = array_merge(static::$defaultOptions, $options);
 
             $jshrink = new Minifier();
             $js = $jshrink->lock($js);
-            $jshrink->minifyDirectToOutput($js, $currentOptions);
+            $jshrink->minifyDirectToOutput($js, $options);
 
             // Sometimes there's a leading new line, so we trim that out here.
             $js = ltrim(ob_get_clean());
@@ -132,12 +131,13 @@ class Minifier
      * Processes a javascript string and outputs only the required characters,
      * stripping out all unneeded characters.
      *
-     * @param string $js             The raw javascript to be minified
-     * @param array  $currentOptions Various runtime options in an associative array
+     * @param string $js The raw javascript to be minified
+     * @param $options array
+     * @internal param array $currentOptions Various runtime options in an associative array
      */
-    protected function minifyDirectToOutput($js, $currentOptions)
+    protected function minifyDirectToOutput($js, $options)
     {
-        $this->initialize($js, $currentOptions);
+        $this->initialize($js, $options);
         $this->loop();
         $this->clean();
     }
@@ -146,9 +146,10 @@ class Minifier
      *  Initializes internal variables, normalizes new lines,
      *
      * @param $js string
-     * @param $currentOptions array
+     * @param $options array
+     * @internal param array $currentOptions
      */
-    protected function initialize($js, $currentOptions)
+    protected function initialize($js, $options)
     {
         $this->options = array_merge(static::$defaultOptions, $options);
         $js = str_replace("\r\n", "\n", $js);
