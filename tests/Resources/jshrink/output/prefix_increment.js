@@ -1,1 +1,1 @@
-do{div.innerHTML="<!--[if gt IE "+ ++v+"]><![endif]-->"}
+do{div.innerHTML="<!--[if gt IE "+ ++v+"]><![endif]-->"}while(1)
