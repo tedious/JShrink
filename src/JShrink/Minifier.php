@@ -303,6 +303,13 @@ class Minifier
         return $char;
     }
 
+    /**
+     * Removed one line comments, with the exception of some very specific types of
+     * conditional comments.
+     *
+     * @param $startIndex int    The index point where "getReal" function started
+     * @return string
+     */
     protected function processOneLineComments($startIndex)
     {
         $thirdCommentString = substr($this->input, $this->index, 1);
@@ -323,6 +330,14 @@ class Minifier
         return $char;
     }
 
+    /**
+     * Skips multiline comments where appropriate, and includes them where needed.
+     * Conditional comments and "license" style blocks are preserved.
+     *
+     * @param $startIndex int    The index point where "getReal" function started
+     * @return bool|string       False if there's no character
+     * @throws \RuntimeException Unclosed comments will throw an error
+     */
     protected function processMultiLineComments($startIndex)
     {
         $this->getChar(); // current C
@@ -376,7 +391,7 @@ class Minifier
      * is found the first character of the string is returned and the index is set
      * to it's position.
      *
-     * @param $string
+     * @param $string string
      * @return string|false Returns the first character of the string or false.
      */
     protected function getNext($string)
@@ -420,7 +435,6 @@ class Minifier
         // Echo out that starting quote
         echo $this->a;
 
-
         // Loop until the string is done
         while (1) {
 
@@ -435,8 +449,6 @@ class Minifier
                 case $stringType:
                     break 2;
 
-
-
                 // New lines in strings without line delimiters are bad- actual
                 // new lines will be represented by the string \n and not the actual
                 // character, so those will be treated just fine using the switch
@@ -444,7 +456,6 @@ class Minifier
                 case "\n":
                     throw new \RuntimeException('Unclosed string at position: ' . $startpos );
                     break;
-
 
                 // Escaped characters get picked up here. If it's an escaped new line it's not really needed
                 case '\\':
