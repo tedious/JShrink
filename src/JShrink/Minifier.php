@@ -293,7 +293,7 @@ class Minifier
                 $thirdCommentString = substr($this->input, $this->index, 1);
 
                 // kill rest of line
-                $char = $this->getNext("\n");
+                $this->getNext("\n");
 
                 if ($thirdCommentString == '@') {
                     $endPoint = ($this->index) - $startIndex;
@@ -309,27 +309,12 @@ class Minifier
                 $this->getChar(); // current C
                 $thirdCommentString = $this->getChar();
 
-                /*
-                if ($thirdCommentString == '@') {
-                    // conditional comment
-
-                    // we're gonna back up a bit and and send the comment back,
-                    // where the first char will be echoed and the rest will be
-                    // treated like a string
-                    $this->index = $this->index-2;
-
-                    return '/';
-
-                } else
-                    */
-                    if ($this->getNext('*/')) {
-                // kill everything up to the next */
+                // kill everything up to the next */ if it's there
+                if ($this->getNext('*/')) {
 
                     $this->getChar(); // get *
                     $this->getChar(); // get /
-
                     $char = $this->getChar(); // get next real character
-
 
                     // Now we reinsert conditional comments and YUI-style licensing comments
                     if (($this->options['flaggedComments'] && $thirdCommentString == '!')
