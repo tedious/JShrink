@@ -331,7 +331,7 @@ class Minifier
                     $char = $this->getChar(); // get next real character
 
 
-                    // Now we reinsert conditional comments and YUI-style licensing comments    
+                    // Now we reinsert conditional comments and YUI-style licensing comments
                     if (($this->options['flaggedComments'] && $thirdCommentString == '!')
                         || ($thirdCommentString == '@') ) {
 
@@ -349,6 +349,7 @@ class Minifier
 
                         $endPoint = ($this->index - 1) - $startIndex;
                         echo substr($this->input, $startIndex, $endPoint);
+
                         return $char;
                     }
 
