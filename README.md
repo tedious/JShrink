@@ -16,14 +16,16 @@ performance.
 
 Minifying your code is simple call to a static function-
 
-````
+```php
 <?php
+include('vendor/autoload.php');
+
 // Basic (default) usage.
-$minifiedCode = JShrink\Minifier::minify($js);
+$minifiedCode = \JShrink\Minifier::minify($js);
 
 // Disable YUI style comment preservation.
-$minifiedCode = JShrink\Minifier::minify($js, array('flaggedComments' => false));
-````
+$minifiedCode = \JShrink\Minifier::minify($js, array('flaggedComments' => false));
+```
 
 
 ## Results
@@ -45,7 +47,7 @@ Until JShrink reaches a stable API with version 1.0 it is recommended that you
 review changes before even Minor updates, although bug fixes will always be
 backwards compatible.
 
-```
+```yaml
 "require": {
   "tedivm/jshrink": "0.5.*"
 }
@@ -55,7 +57,7 @@ backwards compatible.
 
 JShrink is also available through Pear.
 
-```
+```bash
 $ pear channel-discover pear.tedivm.com
 $ pear install tedivm/JShrink
 ```
