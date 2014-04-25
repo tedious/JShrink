@@ -498,9 +498,6 @@ class Minifier
                 default:
                     echo $this->a;
             }
-
-            // Echo a- it'll be set to the next char at the start of the loop
-            // echo $this->a;
         }
     }
 
