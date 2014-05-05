@@ -3,7 +3,7 @@
 [![License](http://img.shields.io/packagist/l/tedivm/JShrink.svg)](https://github.com/tedivm/JShrink/blob/master/LICENSE)
 [![Latest Stable Version](http://img.shields.io/github/release/tedivm/JShrink.svg)](https://packagist.org/packages/tedivm/JShrink)
 [![Coverage Status](http://img.shields.io/coveralls/tedivm/JShrink.svg)](https://coveralls.io/r/tedivm/JShrink?branch=master)
-[![Total Downloads](https://poser.pugx.org/tedivm/JShrink/downloads.png)](https://packagist.org/packages/tedivm/JShrink)
+[![Total Downloads](http://img.shields.io/packagist/dt/tedivm/jshrink.svg)](https://packagist.org/packages/tedivm/JShrink)
 
 
 JShrink is a php class that minifies javascript so that it can be delivered to the client quicker. This code can be used
