@@ -49,19 +49,9 @@ backwards compatible.
 
 ```yaml
 "require": {
-  "tedivm/jshrink": "0.5.*"
+  "tedivm/jshrink": "~1.0"
 }
 ```
-
-### Pear
-
-JShrink is also available through Pear.
-
-```bash
-$ pear channel-discover pear.tedivm.com
-$ pear install tedivm/JShrink
-```
-
 
 ### Github
 
