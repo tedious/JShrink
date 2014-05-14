@@ -43,10 +43,6 @@ $minifiedCode = \JShrink\Minifier::minify($js, array('flaggedComments' => false)
 Installing JShrink can be done through a variety of methods, although Composer is
 recommended.
 
-Until JShrink reaches a stable API with version 1.0 it is recommended that you
-review changes before even Minor updates, although bug fixes will always be
-backwards compatible.
-
 ```yaml
 "require": {
   "tedivm/jshrink": "~1.0"
