@@ -490,7 +490,7 @@ class Minifier
                     }
 
                     // echo out the escaped character and restart the loop.
-                    echo $this->a , $this->b;
+                    echo $this->a . $this->b;
                     break;
 
 
@@ -510,7 +510,7 @@ class Minifier
      */
     protected function saveRegex()
     {
-        echo $this->a , $this->b;
+        echo $this->a . $this->b;
 
         while (($this->a = $this->getChar()) !== false) {
             if($this->a === '/')
