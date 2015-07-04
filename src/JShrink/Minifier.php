@@ -537,7 +537,7 @@ class Minifier
      */
     protected static function isAlphaNumeric($char)
     {
-        return preg_match('/^[\w\$]$/', $char) === 1 || $char == '/';
+        return preg_match('/^[\w\$\pL]$/', $char) === 1 || $char == '/';
     }
 
     /**
