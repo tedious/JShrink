@@ -312,10 +312,14 @@ class Minifier
         $this->c = $this->getChar();
 
         if ($this->c === '/') {
-            return $this->processOneLineComments($startIndex);
+            $this->processOneLineComments($startIndex);
+
+            return $this->getReal();
 
         } elseif ($this->c === '*') {
-            return $this->processMultiLineComments($startIndex);
+            $this->processMultiLineComments($startIndex);
+
+            return $this->getReal();
         }
 
         return $char;
@@ -325,8 +329,8 @@ class Minifier
      * Removed one line comments, with the exception of some very specific types of
      * conditional comments.
      *
-     * @param  int    $startIndex The index point where "getReal" function started
-     * @return string
+     * @param  int  $startIndex The index point where "getReal" function started
+     * @return void
      */
     protected function processOneLineComments($startIndex)
     {
@@ -335,17 +339,12 @@ class Minifier
         // kill rest of line
         $this->getNext("\n");
 
+        unset($this->c);
+
         if ($thirdCommentString == '@') {
             $endPoint = $this->index - $startIndex;
-            unset($this->c);
-            $char = "\n" . substr($this->input, $startIndex, $endPoint);
-        } else {
-            // first one is contents of $this->c
-            $this->getChar();
-            $char = $this->getChar();
+            $this->c = "\n" . substr($this->input, $startIndex, $endPoint);
         }
-
-        return $char;
     }
 
     /**
@@ -353,7 +352,7 @@ class Minifier
      * Conditional comments and "license" style blocks are preserved.
      *
      * @param  int               $startIndex The index point where "getReal" function started
-     * @return bool|string       False if there's no character
+     * @return void
      * @throws \RuntimeException Unclosed comments will throw an error
      */
     protected function processMultiLineComments($startIndex)
@@ -387,7 +386,9 @@ class Minifier
                 $endPoint = ($this->index - 1) - $startIndex;
                 echo substr($this->input, $startIndex, $endPoint);
 
-                return $char;
+                $this->c = $char;
+
+                return;
             }
 
         } else {
@@ -398,10 +399,7 @@ class Minifier
             throw new \RuntimeException('Unclosed multiline comment at position: ' . ($this->index - 2));
 
         // if we're here c is part of the comment and therefore tossed
-        if(isset($this->c))
-            unset($this->c);
-
-        return $char;
+        $this->c = $char;
     }
 
     /**
