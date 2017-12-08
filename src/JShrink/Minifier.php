@@ -75,6 +75,11 @@ class Minifier
     protected $options;
 
     /**
+     * These characters are used to define strings.
+     */
+    protected $stringDelimiters = ['\'', '"', '`'];
+
+    /**
      * Contains the default options for minification. This array is merged with
      * the one passed in by the user to create the request specific set of
      * options (stored in the $options attribute).
@@ -442,7 +447,7 @@ class Minifier
         $this->a = $this->b;
 
         // If this isn't a string we don't need to do anything.
-        if ($this->a !== "'" && $this->a !== '"') {
+        if (!in_array($this->a, $this->stringDelimiters)) {
             return;
         }
 
@@ -471,7 +476,11 @@ class Minifier
                 // character, so those will be treated just fine using the switch
                 // block below.
                 case "\n":
-                    throw new \RuntimeException('Unclosed string at position: ' . $startpos );
+                    if ($stringType === '`') {
+                        echo $this->a;
+                    } else {
+                        throw new \RuntimeException('Unclosed string at position: ' . $startpos );
+                    }
                     break;
 
                 // Escaped characters get picked up here. If it's an escaped new line it's not really needed
