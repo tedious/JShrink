@@ -13,7 +13,7 @@ namespace JShrink\Test;
 
 use JShrink\Minifier;
 
-class JShrinkTest extends \PHPUnit_Framework_TestCase
+class JShrinkTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException RuntimeException
@@ -103,8 +103,9 @@ class JShrinkTest extends \PHPUnit_Framework_TestCase
 
         $testFiles = scandir($testDir);
         foreach ($testFiles as $testFile) {
-            if(substr($testFile, -3) !== '.js' || !file_exists(($expectDir . $testFile)))
+            if (substr($testFile, -3) !== '.js' || !file_exists(($expectDir . $testFile))) {
                 continue;
+            }
 
             $testInput = file_get_contents($testDir . $testFile);
             $testOutput = file_get_contents($expectDir . $testFile);
