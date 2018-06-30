@@ -459,11 +459,8 @@ class Minifier
         echo $this->a;
 
         // Loop until the string is done
-        while (true) {
-
-            // Grab the very next character and load it into a
-            $this->a = $this->getChar();
-
+        // Grab the very next character and load it into a
+        while ($this->a = $this->getChar()) {
             switch ($this->a) {
 
                 // If the string opener (single or double quote) is used
