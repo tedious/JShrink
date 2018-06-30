@@ -460,7 +460,7 @@ class Minifier
 
         // Loop until the string is done
         // Grab the very next character and load it into a
-        while ($this->a = $this->getChar()) {
+        while (($this->a = $this->getChar()) !== FALSE) {
             switch ($this->a) {
 
                 // If the string opener (single or double quote) is used
