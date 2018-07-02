@@ -274,9 +274,8 @@ class Minifier
         if (isset($this->c)) {
             $char = $this->c;
             unset($this->c);
-
-            // Otherwise we start pulling from the input.
         } else {
+            // Otherwise we start pulling from the input.
             $char = substr($this->input, $this->index, 1);
 
             // If the next character doesn't exist return false.
@@ -459,11 +458,8 @@ class Minifier
         echo $this->a;
 
         // Loop until the string is done
-        while (true) {
-
-            // Grab the very next character and load it into a
-            $this->a = $this->getChar();
-
+        // Grab the very next character and load it into a
+        while (($this->a = $this->getChar()) !== false) {
             switch ($this->a) {
 
                 // If the string opener (single or double quote) is used
