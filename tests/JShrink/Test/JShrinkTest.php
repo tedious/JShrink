@@ -53,6 +53,15 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @minify
+     * @dataProvider minifyProvider
+     */
+    public function testMinify($testName, $input, $output)
+    {
+        $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Minify Test: ' . $testName);
+    }
+
+    /**
      * @uglify
      * @dataProvider uglifyProvider
      */
@@ -114,6 +123,11 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
         }
 
         return $returnData;
+    }
+
+    public function minifyProvider()
+    {
+        return $this->getTestFiles('minify');
     }
 
     public function uglifyProvider()
