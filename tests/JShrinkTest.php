@@ -95,7 +95,7 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
      */
     public function getTestFiles($group)
     {
-        $baseDir = __DIR__ . '/../../Resources/' . $group . '/';
+        $baseDir = __DIR__ . '//Resources/' . $group . '/';
         $testDir = $baseDir . 'input/';
         $expectDir = $baseDir . 'output/';
 

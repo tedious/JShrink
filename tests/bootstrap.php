@@ -25,4 +25,3 @@ if (!file_exists($filename)) {
 }
 
 $loader = require $filename;
-$loader->add('JShrink\\Test', __DIR__);

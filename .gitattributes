@@ -1,5 +1,5 @@
 # Ignore un-needed files and directories for export of production releases
-# Keeps src/JShrink
+# Keeps src/
 #
 # See: http://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes#Exporting-Your-Repository
 

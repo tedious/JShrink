@@ -24,7 +24,7 @@ reports to feature requests, typos to full new features- are greatly appreciated
 
 This project follows the PSR standards set forth by the [PHP Framework Interop Group](http://www.php-fig.org/).
 
-* [PSR-0: Class and file naming conventions](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
+* [PSR-4: Class and file naming conventions](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
 * [PSR-1: Basic coding standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
 * [PSR-2: Coding style guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 

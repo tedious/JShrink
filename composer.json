@@ -20,6 +20,9 @@
       "php-coveralls/php-coveralls": "^1.1.0"
   },
   "autoload": {
-    "psr-0": {"JShrink": "src/"}
+    "psr-4": {"JShrink\\": "src/"}
+  },
+  "autoload-dev": {
+    "psr-4": {"JShrink\\Test\\": "tests/"}
   }
 }
