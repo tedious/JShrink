@@ -59,3 +59,8 @@ Releases of JShrink are available on [Github](https://github.com/tedious/JShrink
 JShrink is licensed under the BSD License. See the LICENSE file for details.
 
 In the spirit of open source, use of this library for evil is discouraged but not prohibited.
+
+
+## Reporting Security and Vulnerability Issues
+
+This project utilizes the [Tidelift Security Reporting System](https://tidelift.com/security) for security and vulnerability reporting. 
