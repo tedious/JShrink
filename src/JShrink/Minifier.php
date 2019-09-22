@@ -77,7 +77,7 @@ class Minifier
     /**
      * These characters are used to define strings.
      */
-    protected $stringDelimiters = ['\'', '"', '`'];
+    protected $stringDelimiters = ['\'' => true, '"' => true, '`' => true];
 
     /**
      * Contains the default options for minification. This array is merged with
@@ -447,7 +447,7 @@ class Minifier
         $this->a = $this->b;
 
         // If this isn't a string we don't need to do anything.
-        if (!in_array($this->a, $this->stringDelimiters)) {
+        if (!isset($this->stringDelimiters[$this->a])) {
             return;
         }
 
