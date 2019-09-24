@@ -93,7 +93,7 @@ class Minifier
      *
      * @var array
      */
-    protected static $defaultOptions = array('flaggedComments' => true);
+    protected static $defaultOptions = ['flaggedComments' => true];
 
     /**
      * Contains lock ids which are used to replace certain code patterns and
@@ -112,7 +112,7 @@ class Minifier
      * @throws \Exception
      * @return bool|string
      */
-    public static function minify($js, $options = array())
+    public static function minify($js, $options = [])
     {
         try {
             ob_start();
@@ -246,7 +246,7 @@ class Minifier
                                 break;
                             }
 
-                                // no break
+                        // no break
                         default:
                             // check for some regex that breaks stuff
                             if ($this->a === '/' && ($this->b === '\'' || $this->b === '"')) {
