@@ -101,7 +101,7 @@ class Minifier
      *
      * @var array
      */
-    protected $locks = array();
+    protected $locks = [];
 
     /**
      * Takes a string containing javascript and removes unneeded characters in
@@ -181,6 +181,18 @@ class Minifier
     }
 
     /**
+     * Characters that can't stand alone preserve the newline.
+     *
+     * @var array
+     */
+    protected $noNewLineCharacters = [
+        '(' => true,
+        '-' => true,
+        '+' => true,
+        '[' => true,
+        '@' => true];
+
+    /**
      * The primary action occurs here. This function loops through the input string,
      * outputting anything that's relevant and discarding anything that is not.
      */
@@ -191,7 +203,7 @@ class Minifier
                 // new lines
                 case "\n":
                     // if the next line is something that can't stand alone preserve the newline
-                    if ($this->b !== false && strpos('(-+[@', $this->b) !== false) {
+                    if ($this->b !== false && isset($this->noNewLineCharacters[$this->b])) {
                         echo $this->a;
                         $this->saveString();
                         break;
