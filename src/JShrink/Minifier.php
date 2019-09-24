@@ -310,7 +310,7 @@ class Minifier
 
         // Normalize all whitespace except for the newline character into a
         // standard space.
-        if ($char !== "\n" && $char < "\20") {
+        if ($char !== "\n" && $char < "\x20") {
             return ' ';
         }
 
