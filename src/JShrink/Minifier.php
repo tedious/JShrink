@@ -39,6 +39,13 @@ class Minifier
     protected $input;
 
     /**
+     * Length of input javascript.
+     *
+     * @var int
+     */
+    protected $len = 0;
+
+    /**
      * The location of the character (in the input string) that is next to be
      * processed.
      *
@@ -166,6 +173,9 @@ class Minifier
         // comment error that can otherwise occur.
         $this->input .= PHP_EOL;
 
+        // save input length to skip calculation every time
+        $this->len = strlen($this->input);
+
         // Populate "a" with a new line, "b" with the first character, before
         // entering the loop
         $this->a = "\n";
@@ -257,6 +267,7 @@ class Minifier
     protected function clean()
     {
         unset($this->input);
+        $this->len = 0;
         $this->index = 0;
         $this->a = $this->b = '';
         unset($this->c);
@@ -276,7 +287,7 @@ class Minifier
             unset($this->c);
         } else {
             // Otherwise we start pulling from the input.
-            $char = substr($this->input, $this->index, 1);
+            $char = $this->index < $this->len ? $this->input[$this->index] : false;
 
             // If the next character doesn't exist return false.
             if (isset($char) && $char === false) {
@@ -340,7 +351,7 @@ class Minifier
      */
     protected function processOneLineComments($startIndex)
     {
-        $thirdCommentString = substr($this->input, $this->index, 1);
+        $thirdCommentString = $this->index < $this->len ? $this->input[$this->index] : false;
 
         // kill rest of line
         $this->getNext("\n");
@@ -429,7 +440,7 @@ class Minifier
         $this->index = $pos;
 
         // Return the first character of that string.
-        return substr($this->input, $this->index, 1);
+        return $this->index < $this->len ? $this->input[$this->index] : false;
     }
 
     /**
