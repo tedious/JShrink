@@ -289,7 +289,7 @@ class Minifier
 
         // Normalize all whitespace except for the newline character into a
         // standard space.
-        if ($char !== "\n" && ord($char) < 32) {
+        if ($char !== "\n" && $char < "\20") {
             return ' ';
         }
 
