@@ -16,29 +16,29 @@ use JShrink\Minifier;
 class JShrinkTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Unclosed multiline comment at position: 1
+     * @expectExceptionMessageMatches Unclosed multiline comment at position: 1
      */
     public function testUnclosedCommentException()
     {
+        $this->expectException(\RuntimeException::class);
         \JShrink\Minifier::minify('/* This comment is hanging out.');
     }
 
     /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Unclosed string at position: 14
+     * @expectExceptionMessageMatches Unclosed string at position: 14
      */
     public function testUnclosedStringException()
     {
+        $this->expectException(\RuntimeException::class);
         \JShrink\Minifier::minify('var string = "This string is hanging out.');
     }
 
     /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Unclosed regex pattern at position: 23
+     * @expectExceptionMessageMatches Unclosed regex pattern at position: 23
      */
     public function testUnclosedRegexException()
     {
+        $this->expectException(\RuntimeException::class);
         \JShrink\Minifier::minify('var re = /[^A-Za-z0-9_
         var string = "Another Filler"');
     }
