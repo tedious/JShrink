@@ -18,5 +18,8 @@ jobs:
       run: |
         composer install --no-interaction --prefer-dist
 
+    - name: PHP Unit test
+      run: ./tests/runTests.sh
+
     - name: Check PHPStan rules
       run: composer phpstan
