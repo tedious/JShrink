@@ -105,7 +105,7 @@ class Minifier
 
     /**
      * Takes a string containing javascript and removes unneeded characters in
-     * order to shrink the code without altering it's functionality.
+     * order to shrink the code without altering its functionality.
      *
      * @param  string      $js      The raw javascript to be minified
      * @param  array       $options Various runtime options in an associative array
@@ -297,7 +297,7 @@ class Minifier
             unset($this->c);
         } else {
             // Otherwise we start pulling from the input.
-            $char = $this->index < $this->len ? $this->input[$this->index] : false;
+            $char = ($this->index < $this->len) ? $this->input[$this->index] : false;
 
             // If the next character doesn't exist return false.
             if (isset($char) && $char === false) {
@@ -361,7 +361,7 @@ class Minifier
      */
     protected function processOneLineComments($startIndex)
     {
-        $thirdCommentString = $this->index < $this->len ? $this->input[$this->index] : false;
+        $thirdCommentString = ($this->index < $this->len) ? $this->input[$this->index] : false;
 
         // kill rest of line
         $this->getNext("\n");
@@ -450,7 +450,7 @@ class Minifier
         $this->index = $pos;
 
         // Return the first character of that string.
-        return $this->index < $this->len ? $this->input[$this->index] : false;
+        return ($this->index < $this->len) ? $this->input[$this->index] : false;
     }
 
     /**
