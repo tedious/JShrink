@@ -318,6 +318,40 @@ class Minifier
     }
 
     /**
+     * Returns the next string for processing based off of the current index.
+     * increament the index in local variable
+     * @return string
+     */
+    protected function getNextChar()
+    {
+        $pointer = $this->index;
+        // Check to see if we had anything in the look ahead buffer and use that.
+        if (isset($this->c)) {
+            $char = $this->c;
+            unset($this->c);
+        } else {
+            // Otherwise we start pulling from the input.
+            $char = $pointer < $this->len ? $this->input[$pointer] : false;
+
+            // If the next character doesn't exist return false.
+            if (isset($char) && $char === false) {
+                return false;
+            }
+
+            // increment the local variable pointer and use this char.
+            $pointer++;
+        }
+
+        // Normalize all whitespace except for the newline character into a
+        // standard space.
+        if ($char !== "\n" && $char < "\x20") {
+            return ' ';
+        }
+
+        return $char;
+    }
+
+    /**
      * This function gets the next "real" character. It is essentially a wrapper
      * around the getChar function that skips comments. This has significant
      * performance benefits as the skipping is done using native functions (ie,
@@ -538,7 +572,8 @@ class Minifier
         echo $this->a . $this->b;
 
         while (($this->a = $this->getChar()) !== false) {
-            if ($this->a === '/') {
+            $pointer = $this->getNextChar();
+            if ($this->a === '/' && (preg_match('/g|\n|i|\.|,|\s/', $pointer) === 1)) {
                 break;
             }
 
