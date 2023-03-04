@@ -164,7 +164,7 @@ class Minifier
     protected function initialize($js, $options)
     {
         $this->options = array_merge(static::$defaultOptions, $options);
-        $this->input = str_replace(["\r\n", '/**/', "\r"], ["\n", "", "\n"], $js);
+        $this->input = $js;
 
         // We add a newline to the end of the script to make it easier to deal
         // with comments at the bottom of the script- this prevents the unclosed
@@ -308,6 +308,12 @@ class Minifier
             $this->index++;
         }
 
+        # Convert all line endings to unix standard.
+        # `\r\n` converts to `\n\n` and is minified.
+        if ($char == "\r") {
+            $char = "\n";
+        }
+
         // Normalize all whitespace except for the newline character into a
         // standard space.
         if ($char !== "\n" && $char < "\x20") {
@@ -315,6 +321,19 @@ class Minifier
         }
 
         return $char;
+    }
+
+    /**
+     * This function returns the next character without moving the index forward.
+     *
+     *
+     * @return string            The next character
+     * @throws \RuntimeException
+     */
+    protected function peek()
+    {
+        # Pull the next character but don't push the index.
+        return $this->index < $this->len ? $this->input[$this->index] : false;
     }
 
     /**
@@ -386,6 +405,15 @@ class Minifier
     {
         $this->getChar(); // current C
         $thirdCommentString = $this->getChar();
+
+        // Detect a completely empty comment, ie `/**/`
+        if ($thirdCommentString == "*") {
+            $peekChar = $this->peek();
+            if ($peekChar == "/") {
+                $this->index++;
+                return;
+            }
+        }
 
         // kill everything up to the next */ if it's there
         if ($this->getNext('*/')) {
