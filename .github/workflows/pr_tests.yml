@@ -8,7 +8,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php_version: ["8.0", "8.1", "8.2", "latest"]
+        phpunit_version: [10]
+        php_version: ["8.1", "8.2", "latest"]
+        include:
+          - php_version: "8.0"
+            phpunit_version: "9"
 
     runs-on: ubuntu-latest
 
@@ -23,6 +27,7 @@ jobs:
         env:
           XDEBUG_MODE: coverage
         with:
+          version: ${{ matrix.phpunit_version }}
           php_version: ${{ matrix.php_version }}
           php_extensions: "xdebug"
           coverage_clover: "build/logs/clover.xml"
