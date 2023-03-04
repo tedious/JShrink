@@ -347,7 +347,6 @@ class Minifier
         if ($char !== "\n" && $char < "\x20") {
             return ' ';
         }
-
         return $char;
     }
 
