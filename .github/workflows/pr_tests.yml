@@ -11,8 +11,8 @@ jobs:
         phpunit_version: [10]
         php_version: ["8.1", "8.2", "latest"]
         include:
-          - php_version: "8.0"
-            phpunit_version: "9"
+          - phpunit_version: "9"
+            php_version: "8.0"
 
     runs-on: ubuntu-latest
 
