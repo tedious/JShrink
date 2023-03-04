@@ -2,7 +2,7 @@
 set -e
 
 echo 'Running unit tests.'
-./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
+./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 echo ''
 echo ''

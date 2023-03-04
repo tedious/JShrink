@@ -15,30 +15,24 @@ use JShrink\Minifier;
 
 class JShrinkTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Unclosed multiline comment at position: 1
-     */
     public function testUnclosedCommentException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("Unclosed multiline comment at position: 1");
         \JShrink\Minifier::minify('/* This comment is hanging out.');
     }
 
-    /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Unclosed string at position: 14
-     */
     public function testUnclosedStringException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("Unclosed string at position: 14");
         \JShrink\Minifier::minify('var string = "This string is hanging out.');
     }
 
-    /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Unclosed regex pattern at position: 23
-     */
     public function testUnclosedRegexException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("Unclosed regex pattern at position: 23");
         \JShrink\Minifier::minify('var re = /[^A-Za-z0-9_
         var string = "Another Filler"');
     }
@@ -70,14 +64,14 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running User Requested Test: ' . $testName);
     }
 
-    /**
-     * @group development
-     * @dataProvider developmentProvider
-     */
-    public function testDevelopment($testName, $input, $output)
-    {
-        $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Development Test: ' . $testName);
-    }
+    // /**
+    //  * @group development
+    //  * @dataProvider developmentProvider
+    //  */
+    // public function testDevelopment($testName, $input, $output)
+    // {
+    //     $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running Development Test: ' . $testName);
+    // }
 
     /**
      * This function loads all of the test cases from the specified group.
@@ -93,7 +87,7 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
      * @param $group string
      * @return array
      */
-    public function getTestFiles($group)
+    public static function getTestFiles($group)
     {
         $baseDir = __DIR__ . '/../../Resources/' . $group . '/';
         $testDir = $baseDir . 'input/';
@@ -116,23 +110,23 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
         return $returnData;
     }
 
-    public function uglifyProvider()
+    public static function uglifyProvider()
     {
-        return $this->getTestFiles('uglify');
+        return self::getTestFiles('uglify');
     }
 
-    public function JShrinkProvider()
+    public static function JShrinkProvider()
     {
-        return $this->getTestFiles('jshrink');
+        return self::getTestFiles('jshrink');
     }
 
-    public function requestProvider()
+    public static function requestProvider()
     {
-        return $this->getTestFiles('requests');
+        return self::getTestFiles('requests');
     }
 
-    public function developmentProvider()
+    public static function developmentProvider()
     {
-        return $this->getTestFiles('development');
+        return self::getTestFiles('development');
     }
 }

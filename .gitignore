@@ -7,3 +7,6 @@
 /vendor
 /report
 /build
+/.phpunit*
+*.bak
+*.cache
