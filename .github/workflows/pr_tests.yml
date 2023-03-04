@@ -22,3 +22,5 @@ jobs:
         uses: php-actions/phpunit@v3
         with:
           php_version: ${{ matrix.php_version }}
+          php_extensions: "xdebug"
+          coverage_clover: "build/logs/clover.xml"
