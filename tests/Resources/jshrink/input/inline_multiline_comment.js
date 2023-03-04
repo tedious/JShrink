@@ -1,0 +1,1 @@
+var d = 1; /* test comment /**/ var d = 2;
