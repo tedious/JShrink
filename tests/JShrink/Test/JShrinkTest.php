@@ -43,6 +43,7 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
      */
     public function testJShrink($testName, $input, $output)
     {
+        echo('Running JShrink Test: ' . $testName);
         $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running JShrink Test: ' . $testName);
     }
 
@@ -85,7 +86,7 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
      * the output folder.
      *
      * @param $group string
-     * @return array
+     * @return string[][]
      */
     public static function getTestFiles($group)
     {
@@ -104,7 +105,7 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
             $testInput = file_get_contents($testDir . $testFile);
             $testOutput = file_get_contents($expectDir . $testFile);
 
-            $returnData[] = array($testFile, $testInput, $testOutput);
+            $returnData[$group . ":" . $testFile] = [$testFile, $testInput, $testOutput];
         }
 
         return $returnData;
