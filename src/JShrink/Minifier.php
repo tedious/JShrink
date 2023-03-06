@@ -205,7 +205,6 @@ class Minifier
 
 
     protected function echo($char) {
-        echo($char);
         $this->output .= $char;
         $this->last_char = $char[-1];
     }
