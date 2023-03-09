@@ -65,6 +65,15 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($output, \JShrink\Minifier::minify($input), 'Running User Requested Test: ' . $testName);
     }
 
+    /**
+     * @dataProvider librariesProvider
+     */
+    public function testLibraries($testName, $input)
+    {
+        $this->expectNotToPerformAssertions();
+        \JShrink\Minifier::minify($input);
+    }
+
     // /**
     //  * @group development
     //  * @dataProvider developmentProvider
@@ -111,6 +120,23 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
         return $returnData;
     }
 
+    public static function getTestLibraries()
+    {
+        $testDir = __DIR__ . '/../../Resources/libraries/';
+
+        $returnData = array();
+
+        $testFiles = scandir($testDir);
+        foreach ($testFiles as $testFile) {
+            if (substr($testFile, -3) !== '.js') {
+                continue;
+            }
+            $returnData["Libraries:" . $testFile] = [$testFile, file_get_contents($testDir . $testFile)];
+        }
+
+        return $returnData;
+    }
+
     public static function uglifyProvider()
     {
         return self::getTestFiles('uglify');
@@ -129,5 +155,10 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
     public static function developmentProvider()
     {
         return self::getTestFiles('development');
+    }
+
+    public static function librariesProvider()
+    {
+        return self::getTestLibraries();
     }
 }
