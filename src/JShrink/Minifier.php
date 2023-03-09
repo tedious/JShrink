@@ -285,7 +285,14 @@ class Minifier
 
             if ($this->b == '/') {
                 $valid_tokens = "(,=:[!&|?\n";
-                if (strpos($valid_tokens, $this->last_char) !== false || strpos($valid_tokens, $this->a) !== false) {
+
+                # Find last "real" token, excluding spaces.
+                $last_token = $this->a;
+                if ($last_token == " ") {
+                    $last_token = $this->last_char;
+                }
+
+                if (strpos($valid_tokens, $last_token) !== false) {
                     // Regex can appear unquoted after these symbols
                     $this->saveRegex();
                 } else if ($this->endsInKeyword()) {
@@ -644,11 +651,15 @@ class Minifier
     }
 
     protected function endsInKeyword() {
+
+        # When this function is called A is not yet assigned to output.
+        $testOutput = $this->output . $this->a;
+
         foreach(static::$keywords as $keyword) {
-            if (str_ends_with($this->output, $keyword)) {
+            if (str_ends_with($testOutput, $keyword)) {
                 return true;
             }
-            if (str_ends_with($this->output, $keyword . " ")) {
+            if (str_ends_with($testOutput, $keyword . " ")) {
                 return true;
             }
         }
