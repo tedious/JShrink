@@ -1,2 +1,2 @@
-return /'/
-typeof /'/
+return/'/
+typeof/'/

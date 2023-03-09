@@ -618,7 +618,11 @@ class Minifier
      */
     protected function saveRegex()
     {
-        $this->echo($this->a . $this->b);
+        if ($this->a != " ") {
+            $this->echo($this->a);
+        }
+
+        $this->echo($this->b);
 
         while (($this->a = $this->getChar()) !== false) {
             if ($this->a === '/') {
@@ -656,10 +660,7 @@ class Minifier
         $testOutput = $this->output . $this->a;
 
         foreach(static::$keywords as $keyword) {
-            if (str_ends_with($testOutput, $keyword)) {
-                return true;
-            }
-            if (str_ends_with($testOutput, $keyword . " ")) {
+            if (preg_match('/[^\w]'.$keyword.'[ ]?$/i', $testOutput) === 1) {
                 return true;
             }
         }
