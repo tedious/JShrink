@@ -9,30 +9,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        phpunit_version: [10]
-        php_version: ["8.1", "8.2", "latest"]
-        include:
-          - phpunit_version: "9"
-            php_version: "7.3"
-          - phpunit_version: "9"
-            php_version: "7.4"
-          - phpunit_version: "9"
-            php_version: "8.0"
+        php_version: ["7.4", "8.0", "8.1", "8.2", "latest"]
 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php_version }}
+          extensions: xdebug
+
       - name: Install PHP Packages
         uses: php-actions/composer@v6
 
       - name: Run Tests
-        uses: php-actions/phpunit@v3
         env:
           XDEBUG_MODE: coverage
-        with:
-          version: ${{ matrix.phpunit_version }}
-          php_version: ${{ matrix.php_version }}
-          php_extensions: "xdebug"
-          coverage_clover: "build/logs/clover.xml"
+        run: ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
