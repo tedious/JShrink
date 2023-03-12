@@ -20,10 +20,10 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php_version }}
-          extensions: xdebug
+          coverage: xdebug
 
       - name: Install PHP Packages
-        uses: php-actions/composer@v6
+        run: composer install --no-progress
 
       - name: Run Tests
         env:
