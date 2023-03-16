@@ -1,4 +1,1 @@
-function test(string){return(string||'').replace(/([\\!"#$%&'()*+,./:;<=>?@\[\]^`{|}~])/g,
-    '\\$1'
-  )
-}
+function test(string){return(string||'').replace(/([\\!"#$%&'()*+,./:;<=>?@\[\]^`{|}~])/g,'\\$1')}
