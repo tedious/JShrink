@@ -201,6 +201,7 @@ class Minifier
         '-' => true,
         '+' => true,
         '[' => true,
+        '#' => true,
         '@' => true];
 
 
