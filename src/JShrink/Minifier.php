@@ -626,7 +626,7 @@ class Minifier
         $this->echo($this->b);
 
         while (($this->a = $this->getChar()) !== false) {
-            if ($this->a === '/' && (preg_match('/g|\n|i|\)|\.|,|\s/', $this->peek()) === 1)) {
+            if ($this->a === '/') {
                 break;
             }
 
