@@ -127,7 +127,7 @@ class Minifier
      * @param  string      $js      The raw javascript to be minified
      * @param  array       $options Various runtime options in an associative array
      * @throws \Exception
-     * @return bool|string
+     * @return string
      */
     public static function minify($js, $options = [])
     {
@@ -674,7 +674,7 @@ class Minifier
      * Replace patterns in the given string and store the replacement
      *
      * @param  string $js The string to lock
-     * @return bool
+     * @return string
      */
     protected function lock($js)
     {
@@ -699,7 +699,7 @@ class Minifier
      * Replace "locks" with the original characters
      *
      * @param  string $js The string to unlock
-     * @return bool
+     * @return string
      */
     protected function unlock($js)
     {
