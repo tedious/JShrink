@@ -679,7 +679,7 @@ class Minifier
      * Replace patterns in the given string and store the replacement
      *
      * @param  string $js The string to lock
-     * @return bool
+     * @return string
      */
     protected function lock($js)
     {
@@ -704,7 +704,7 @@ class Minifier
      * Replace "locks" with the original characters
      *
      * @param  string $js The string to unlock
-     * @return bool
+     * @return string
      */
     protected function unlock($js)
     {
