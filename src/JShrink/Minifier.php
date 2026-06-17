@@ -704,7 +704,7 @@ class Minifier
         $lock = '"LOCK---' . crc32(time()) . '"';
 
         $matches = [];
-        preg_match('/([+-])(\s+)([+-])/S', $js, $matches);
+        preg_match('/([+-])(\s+)([+-])/S', (string)$js, $matches);
         if (empty($matches)) {
             return $js;
         }
